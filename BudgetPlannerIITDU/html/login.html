@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Budget Planner</title>
+  <?php require_once('html/load.html'); ?>
+
+  <script type="text/javascript">
+  	function validateForm(){
+  		var email=document.LogInForm.email;
+  		var password=document.LogInForm.password;
+
+  		if(!email.value){
+  			email.focus();
+  			document.getElementById('emailStatus').innerHTML="Enter email";
+  			return false;
+  		}
+
+  		if(!password.value){
+  			password.focus();
+  			document.getElementById('passwordStatus').innerHTML="Enter password";
+  			return false;
+  		}
+
+  		return true;
+  	}		
+  </script>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="row">
+  <?php
+    require_once('About.html');
+  ?>
+
+  <div class="col-sm-4">
+    <h2>Login</h2>
+    <form name="LogInForm" onsubmit="return validateForm()" method="post">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="someone@example.com">
+        <span id="emailStatus" class="text-danger"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="pwd">Password</label>
+        <input name="password" type="password" class="form-control" id="pwd" placeholder="Enter your password">
+        <span id="passwordStatus" class="text-danger"><?php echo $error?></span>
+      </div>
+      <!-- <div style = "font-size:11px; color:#cc0000; margin-top:10px"><?php echo $error?></div> -->
+      <button type="submit" class="btn btn-primary">Log in</button>
+  </form>  
+  <br>
+  <a href="passwordRecovery.php">Forgot Password?</a>
+  </div>  
+</div>
+</div>
+
+<div class="footer">
+  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
+  University of Dhaka</p>
+</div>
+
+</body>
+</html>
