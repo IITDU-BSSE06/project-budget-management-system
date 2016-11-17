@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -35,4 +36,43 @@
       </ul>
     </div>
   </div>
+=======
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img src="assets/images/logo.png" class="navbar-brand">
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        
+        <ul class="nav navbar-nav">
+  
+        <li><a href="Home.php"><span class="glyphicon glyphicon-home"></span> Home</a></li></li>
+        <?php
+            if($row['Role']==1){
+              echo '
+              <li><a href="users.php">Users</a></li>
+              <li><a href="BudgetInitiation.php">Budget Initiation</a></li>
+              ';
+            }
+        ?>
+        <li><a href="Resources.php">Resources</a></li>
+        <li><a href="CommentPage.php">Comments</a></li>
+        </ul>  
+        
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="profile.php">
+          <span class="glyphicon glyphicon-user"></span> <?php echo $row['Name']; ?> 
+        </a></li>
+        <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+      </ul>
+    </div>
+  </div>
+>>>>>>> 6cd41e290367a2cdedd766d5f9b480d2959dc6a1
 </nav>

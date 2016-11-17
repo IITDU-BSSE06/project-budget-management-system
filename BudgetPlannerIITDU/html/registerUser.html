@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script>
 function validateForm(){
 
@@ -99,3 +100,106 @@ function validateForm(){
     </div>
   </div>
 </div>
+=======
+<script>
+function validateForm(){
+
+  var name=document.registerForm.name;
+  var email=document.registerForm.email;
+  var role=document.registerForm.radgroup;
+
+  if(!name.value){
+    name.focus();
+      document.getElementById('nameStatus').innerHTML="Enter the user's name";
+      return false;
+  }
+  if(!email.value){
+    email.focus();
+      document.getElementById('emailStatus').innerHTML="Enter the user's email";
+      return false;
+  }
+  else{
+    var flag=false;
+
+    $.ajax({
+        url: "ajax.php",
+        type: "post",
+        async: false,
+        data: {itemId: email.value},
+        success: function(data) {
+            flag=data;
+         }
+    });
+    
+    if(flag==true){
+      document.getElementById('emailStatus').innerHTML="Email already exists.";
+        return false;   
+    }
+  }
+  
+  if(!role.value){
+      document.getElementById('roleStatus').innerHTML="Select a role";
+      return false;
+  }
+
+  if(role.value==3){
+    var flag=false;
+
+    $.ajax({
+        url: "ajax.php",
+        type: "post",
+        async: false,
+        data: {role: role.value},
+        success: function(data) {
+            flag=data;
+         }
+    });
+
+    if(flag==false){
+      document.getElementById('roleStatus').innerHTML="Budget officer already exists !";
+      return false;
+    }
+    return false;
+ }
+  
+  return true;
+}
+</script>
+
+
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <span class="close">×</span>
+       <h4> User Registration</h4>
+    </div>
+    <div class="modal-body">
+      <form name="registerForm" role="form" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" name="name" id="name" placeholder="Enter name">
+              <span id="nameStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" name="email" id="email" placeholder="Enter email">
+              <span id="emailStatus" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+            <span id="roleStatus" class="text-danger"></span>
+            <div class="radio">
+              <label><input type="radio" name="radgroup" value="2">Budget committee member</label>
+        <label><input type="radio" name="radgroup" value="3">Budget officer</label> 
+            </div>
+            </div>
+            <button type="submit" class="btn btn-default btn-success btn-block">Register</button>
+          </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
+>>>>>>> 6cd41e290367a2cdedd766d5f9b480d2959dc6a1
