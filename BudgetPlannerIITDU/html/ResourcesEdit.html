@@ -1,0 +1,111 @@
+
+</script>		
+
+		<center>
+        	<label>Running Budget's resources <?php echo $Year;?> </label>
+      	</center>
+
+		<form method="post" onsubmit="return validate()">
+
+			<table class="table table-bordered">
+			    <thead>
+			    	<tr>
+			    		<th>Resoure Name</th>
+			    		<th>Budget(TK)</th>
+			    		<th>Remove</th>
+			    	</tr>
+			    </thead>
+
+			    <tbody>
+			    		
+			    		<?php
+			 if($sql->num_rows>0){
+		while(list($ResoureId,$ResoureName,$Amount)=$sqlBudget->fetch_row()) {?>
+			    		<tr>
+				    		<td><?php echo $ResoureName; ?></td>
+				    		<td><input id="budgetAmount" name="<?php echo $ResoureId; ?>" value="<?php echo $Amount; ?>" ></td>
+				    		<td ><a href="Resources.php?delete_id=<?php echo "$ResoureId"?>" onclick="return confirm ('Are You Sure to remvoe  Resoure <?php echo "$ResoureName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
+			    		</tr>
+			    		<?php
+						} 
+						}
+			    		?>
+			    </tbody>	
+			</table>
+			
+			<span class="text-danger"></span>
+			<button class="btn btn-primary" name="submitBudget" style="float: right; width: 100px;">Submit</button>	
+		</form>
+
+		<br><br><br>
+		
+
+		<form method="post" onsubmit="return validateNewResoure1()" name="newResoureAdd1Frm">
+			<div class="form-group">
+			<label class="control-label" for="year">Add New Resoure</label>
+			    <div class="input-group">		
+					<input class="form-control" id="addNewResoure" name="addNewResoure" placeholder="Enter a Resoure name" type="text"/>
+					<span class="input-group-btn">
+					    <button class="btn btn-primary" name="addNewResoureSubmit1" type="submit">Add</button>
+					</span>
+				</div>
+				<span id="addNewResoureSubmitStatus1" class="text-danger"></span>
+			</div>
+		</form>
+
+
+			<!-- <form method="post" name="newResourceAdd2Frm" onsubmit="return validateNewResource2()">
+			<div class="form-group">
+				<label class="control-label">Add new resource from existing resources</label>
+				<div class="input-group">		
+					<select class="form-control" name="addNewResource2">
+				  		<option value="1">First</option>
+				  		<option value="2">Second</option>
+				  		<option value="3">Third</option>
+					</select>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" name="addNewResource2Submit" type="submit">Add</button>
+					</span>
+				</div>
+				<span id="addNewResourceSubmitStatus2" class="text-danger"></span>
+			</div>		
+		</form> -->
+		
+<script>
+	function validateNewResoure1(){
+
+		var NewResoure =document.newResoureAdd1Frm.addNewResoure;
+		if(!NewResoure.value){
+			NewResoure.focus();
+			document.getElementById('addNewResoureSubmitStatus1').innerHTML="Enter a Resoure name first !";
+			return false;		
+		}
+		return true;
+	}
+
+	function validateNewResoure2(){
+
+		var NewResoure =document.newResoureAdd2Frm.addNewResoure2;
+		if(!NewResoure.value){
+			NewResoure.focus();
+			document.getElementById('addNewResoureSubmitStatus2').innerHTML="Selct box is empty!";
+			return false;		
+		}
+		return true;
+	}
+
+	function validate(){
+
+		var isValid;
+		$('input[id="budgetAmount"]').each(function() {
+		   	var element = $(this);
+		   	if (element.val() == "") {
+		       isValid = false;
+		       element.focus();
+		   	}
+			});
+		return isValid;	
+	}
+	
+
+</script>

@@ -1,0 +1,54 @@
+<?php
+    if(isset($sqlBudget)){
+      if($sqlBudget->num_rows>0){
+        $sql=$db->query("select * from budgetinitiation where Status='1' ");
+        if($sql->num_rows>0){?>
+          <center>
+            <label>Final budget <?php echo $Year;?> </label>
+          </center>
+        <?php
+        }
+
+        else{?>
+
+          <center>
+            <label>Budget <?php echo $Year;?> in process </label>
+          </center>
+        <?php
+
+        }
+      ?>
+
+
+      
+      
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Sector Name</th>
+              <th>Amount(TK)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <?php
+              while(list($SectorId,$SectorName,$Amount)=$sqlBudget->fetch_row()) {?>
+                <tr>
+                  <td><?php echo $SectorName; ?></td>
+                  <td><?php echo $Amount; ?></td>
+                </tr>
+            <?php 
+              } 
+            ?> 
+        </tbody>  
+    </table>
+<?php
+    }
+    else {?>
+
+    <div> New Budget Planning has not been started. </div>
+
+    <?php
+    } 
+  }?>             
+          

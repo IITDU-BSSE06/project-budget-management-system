@@ -1,0 +1,39 @@
+<?php
+    if(isset($sqlBudget)){
+      if($sqlBudget->num_rows>0){?>
+
+      <center>
+        <label>Running Budget <?php echo $Year;?> </label>
+      </center>
+      
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Resource Name</th>
+              <th>Amount(TK)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <?php
+              while(list($ResourceId, $ResourceName,$Amount)=$sqlBudget->fetch_row()) {?>
+                <tr>
+                  <td><?php echo $ResourceName; ?></td>
+                  <td><?php echo $Amount; ?></td>
+                </tr>
+            <?php 
+              } 
+            ?> 
+        </tbody>  
+    </table>
+<?php
+    }
+    else {?>
+
+    <div> Budget Planning of <?php echo $Year; ?> has been started. </div>
+
+    <?php
+    } 
+  }             
+?>
+          
