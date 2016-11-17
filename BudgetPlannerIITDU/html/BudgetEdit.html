@@ -1,0 +1,85 @@
+
+
+		<center>
+        	<label>Running Budget <?php echo $Year;?> </label>
+      	</center>
+
+		<form method="post" onsubmit="return validate()">
+			<table class="table table-bordered">
+			    <thead>
+			    	<tr>
+			    		<th>Sector Name</th>
+			    		<th>Budget(TK)</th>
+			    		<th>Remove</th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+			    		<?php
+			    		while(list($SectorId,$SectorName,$Amount)=$sqlBudget->fetch_row()) {?>
+			    		<tr>
+				    		<td><?php echo $SectorName; ?></td>
+				    		<td><input id="budgetAmount" name="<?php echo $SectorId; ?>" value="<?php echo $Amount; ?>" ></td>
+				    		<td ><a href="BudgetOfficerHome.php?delete_id=<?php echo "$SectorId"?>" onclick="return confirm ('Are You Sure to remvoe  sector <?php echo "$SectorName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
+			    		</tr>
+						<?php
+						} 
+			    		?>
+			    </tbody>	
+			</table>
+			<span class="text-danger"></span>
+			<button class="btn btn-primary" name="submitBudget" style="float: right; width: 100px;">Submit</button>	
+		</form>
+		<br><br><br>
+		
+
+		<form method="post" onsubmit="return validateNewSector1()" name="newSectorAdd1Frm">
+			<div class="form-group">
+			<label class="control-label" for="year">Add New Sector</label>
+			    <div class="input-group">		
+					<input class="form-control" id="addNewSector" name="addNewSector" placeholder="Enter a sector name" type="text"/>
+					<span class="input-group-btn">
+					    <button class="btn btn-primary" name="addNewSectorSubmit1" type="submit">Add</button>
+					</span>
+				</div>
+				<span id="addNewSectorSubmitStatus1" class="text-danger"></span>
+			</div>
+		</form>
+
+<script>
+	function validateNewSector1(){
+
+		var NewSector =document.newSectorAdd1Frm.addNewSector;
+		if(!NewSector.value){
+			NewSector.focus();
+			document.getElementById('addNewSectorSubmitStatus1').innerHTML="Enter a Sector name first !";
+			return false;		
+		}
+		return true;
+	}
+
+	function validateNewSector2(){
+
+		var NewSector =document.newSectorAdd2Frm.addNewSector2;
+		if(!NewSector.value){
+			NewSector.focus();
+			document.getElementById('addNewSectorSubmitStatus2').innerHTML="Selct box is empty!";
+			return false;		
+		}
+		return true;
+	}
+
+	function validate(){
+
+		var isValid;
+		$('input[id="budgetAmount"]').each(function() {
+		   	var element = $(this);
+		   	if (element.val() == "") {
+		       isValid = false;
+		       element.focus();
+		   	}
+			});
+		return isValid;	
+	}
+	
+
+</script>				

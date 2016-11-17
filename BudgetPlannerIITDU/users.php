@@ -5,14 +5,30 @@
 
 	if(isset($_GET['delete_id']))
 	{
-     $sql_query="DELETE FROM user WHERE UserId=".$_GET['delete_id'];
-     $db->query($sql_query);
+
+	$sql=$db->query("select * from budgetinitiation where Status='0' ");
+	if($sql->num_rows>0){
+		echo "<script>alert('User cannot be removed in the middle of Budget process !')</script>";
+	}
+	else{
+		$sql_query="DELETE FROM user WHERE UserId=".$_GET['delete_id'];
+     	$db->query($sql_query);	
+	}
+     
 	}
 
 	if($_SERVER["REQUEST_METHOD"]=="POST"){
-		$Name=trim($_POST['name']);
-		$Email=trim($_POST['email']);
-		$Role=trim($_POST['radgroup']);
+
+		$sql=$db->query("select * from budgetinitiation where Status='0' ");
+		if($sql->num_rows>0){
+			echo "<script>alert('User cannot be added in the middle of Budget process !')</script>";
+		}
+
+		else{
+
+			$Name=trim($_POST['name']);
+			$Email=trim($_POST['email']);
+			$Role=trim($_POST['radgroup']);
 
 			$Password=substr(hash('sha256',$Email.time()), 10,20);
     		$subject  =   "User Registration";
@@ -27,10 +43,9 @@
 				VALUES ('$Name', '$Email', '$hash','$Role')";	
 				$db->query($sql);
 	    	}
-	    	else{
-	    	}
-		
 
+		}
+		
 	}
 
 	$result1=$db->query("select UserId, Name,Email from user where Role='2'");

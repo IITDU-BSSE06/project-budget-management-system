@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+  <title>Budget Planner</title>
+  <?php require_once('html/load.html'); ?>
+  
+  <script>
+	function validate() {
+	if(document.getElementById('member_recovery_code').value == "") {
+		document.getElementById('member_recovery_code').focus();
+		document.getElementById("emailStatus").innerHTML = "Enter the recovery code first !";
+		return false;
+	}
+	return true;
+}
+</script>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<div class="row">
+  <?php
+    require_once('About.html');
+  ?>
+
+  <div class="col-sm-4">
+    <h2>Password Recovery</h2>
+
+    <div>
+
+      An email with a recovery code has been sent to 
+      <a href="http://mail.google.com/"><?php echo $result['Email']; ?></a>.Enter the recovery code to reset your password.
+    </div>
+    <br>
+    <form name="frmForgot" id="frmForgot" method="post" onSubmit="return validate();">
+      <div class="form-group">
+        <!-- <label for="email">Recovery Code:</label> -->
+        <input type="text" name="recovery_code" id="member_recovery_code" class="form-control" placeholder="recovery code">
+
+        <span id="emailStatus" class="text-danger"> 
+        	<?php if(!empty($error_message)) { ?>
+	<?php echo $error_message; ?>
+	<?php } ?>
+        </span>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>  
+  </div>  
+</div>
+</div>
+<div class="footer">
+  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
+  University of Dhaka</p>
+</div>
+
+</body>
+</html>

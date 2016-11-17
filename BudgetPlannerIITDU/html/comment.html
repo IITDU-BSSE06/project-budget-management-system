@@ -1,0 +1,38 @@
+<script>
+	function validate(){
+
+		var vote=document.voteSubmitForm.radgroup;
+		var comment=document.voteSubmitForm.comment;
+
+		if(!vote.value){
+			document.getElementById('validateStatus').innerHTML="You have not voted yet !";
+			return false;
+		}
+		if(!comment.value){
+			comment.focus();
+			document.getElementById('validateStatus').innerHTML="You have to comment !"
+			return false;
+		}
+		return true;		
+	}	
+
+</script>
+
+<form name="voteSubmitForm" method="post" onsubmit="return validate()" >
+	
+	<div class="form-group">
+        <div class="radio">
+           	<b>Vote: </b>
+            <label><input type="radio" name="radgroup" value="1">Yes</label>
+        	<label><input type="radio" name="radgroup" value="0">No</label> 
+        </div>
+    </div>
+
+    <label>Comment:</label>
+    <div class="form-group" id="comment_content" >
+    	<textarea name="comment" id="comment" placeholder="Leave comment here..." rows="5" cols="60"></textarea>
+    </div>
+    <span id="validateStatus" class="text-danger"></span><br>
+    <button type="submit" name="voteSubmit" class="btn btn-primary">Submit</button>
+
+</form>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile</title>
+	<?php require_once('html/load.html'); ?>
+</head>
+<body>
+<?php require_once('html/navbar.html'); ?>
+
+<div class="container" id="containter">
+ 	<h3> Users Comments </h3>
+	<div class="panel-group">
+
+		<?php
+			if($sql_comment->num_rows>0){
+
+				while(list($Name,$Vote,$Comment)=$sql_comment->fetch_row()){
+					$vote="";
+					
+					if($Vote=="1"){ $Color="panel panel-success";$vote="Yes";}
+					else if($Vote=="0"){ $Color="Panel with panel-warning"; $vote="No";} ?>
+
+					<div class='<?php echo $Color;?>'>
+		    		<div class="panel-heading"><span  class="glyphicon glyphicon-user"><b><i><?php echo $Name;?></i></b></span> <div>Voted <?php echo $vote;?></div> </div>
+		    		<div class="panel-body"><?php echo $Comment;?></div>
+	    			</div>
+	    			<br>
+	    			<?php
+				}
+			}?>
+    </div>
+
+</div>
+
+<div class="footer">
+  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
+  University of Dhaka</p>
+</div>
+
+<script src="assets/js/modal.js"></script>
+
+</body>
+</html>
