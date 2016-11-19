@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
+  <title>Resources</title>
   <?php require_once('html/load.html'); ?> 
 </head>
 <body>
@@ -31,7 +31,7 @@
 		      <div class="form-group">
 		      		<label class="control-label" for="year">Budget Year</label>
 			      	<div style="width: 200px;" class="input-group">		
-					   	<input class="form-control" id="year" name="year" placeholder="Year" type="text" value="<?php echo $searchedYear; ?>" />
+					   	<input class="form-control" id="year" name="year" type="text" value="<?php echo $searchedYear; ?>" />
 					   	<span class="input-group-btn">
 					    	<button class="btn btn-primary " name="prevResourceSubmit" type="submit">Go</button>
 					   	</span>
@@ -43,7 +43,7 @@
 		    <?php 
 
 		     	if($sql_SearchedBudget->num_rows==0){?>
-		     		<center> No Budget available for year: <? echo $searchedYear; ?></center>
+		     		<span class="text-danger"> No Resource available for year: <?php echo $searchedYear; ?></center>
 		     	<?php
 		     	}
 
@@ -75,10 +75,9 @@
 		</div>
 	</div>
   </div>
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
+<footer style="text-align: center;">
+ <small>© Copyright <?php echo date('Y');?>, IIT, University of Dhaka</small>
+</footer>
 
 
 <script>
@@ -101,9 +100,9 @@
             format: 'yyyy',
             viewMode: "years", 
     		minViewMode: "years",
-            autoclose: true,
-        })
-    })
+            autoclose: true
+        });
+    });
 </script>
 
   

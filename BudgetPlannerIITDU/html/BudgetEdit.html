@@ -18,15 +18,18 @@
 			    		while(list($SectorId,$SectorName,$Amount)=$sqlBudget->fetch_row()) {?>
 			    		<tr>
 				    		<td><?php echo $SectorName; ?></td>
-				    		<td><input id="budgetAmount" name="<?php echo $SectorId; ?>" value="<?php echo $Amount; ?>" ></td>
-				    		<td ><a href="BudgetOfficerHome.php?delete_id=<?php echo "$SectorId"?>" onclick="return confirm ('Are You Sure to remvoe  sector <?php echo "$SectorName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
+				    		<td><input id="budgetAmount" name="<?php echo $SectorId; ?>" value="<?php echo $Amount; ?>" >
+				    		
+				    		</td>
+				    		<td ><a href="Home.php?delete_id=<?php echo "$SectorId"?>" onclick="return confirm ('Are You Sure to remvoe  sector <?php echo "$SectorName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
 			    		</tr>
 						<?php
 						} 
 			    		?>
 			    </tbody>	
 			</table>
-			<span class="text-danger"></span>
+
+			<span class="text-danger" id="amountStatus"></span>
 			<button class="btn btn-primary" name="submitBudget" style="float: right; width: 100px;">Submit</button>	
 		</form>
 		<br><br><br>
@@ -45,6 +48,31 @@
 			</div>
 		</form>
 
+		<form method="post" name="newSectorAdd2Frm" onsubmit="return validateNewSector2()">
+			<div class="form-group">
+				<label class="control-label">Add new sector from existing sectors</label>
+				<div class="input-group">	
+				<?php
+
+					$sectorList=$db->query("select * from sectors");
+
+					$select= '<select name="addNewSector2" id="addNewSector2" class="form-control">';
+					while($rs=$sectorList->fetch_array(MYSQLI_ASSOC)){
+      					$select.='<option value="'.$rs['SectorId'].'">'.$rs['SectorName'].'</option>';
+  					}
+					$select.='</select>';
+					echo $select;
+
+				?>	
+					
+					<span class="input-group-btn">
+						<button class="btn btn-primary" name="addNewSector2Submit" type="submit">Add</button>
+					</span>
+				</div>
+				<span id="addNewSectorSubmitStatus2" class="text-danger"></span>
+			</div>		
+		</form>
+
 <script>
 	function validateNewSector1(){
 
@@ -54,29 +82,74 @@
 			document.getElementById('addNewSectorSubmitStatus1').innerHTML="Enter a Sector name first !";
 			return false;		
 		}
+		else {
+			var flag;
+			$.ajax({
+		        url: "ajax.php",
+		        type: "post",
+		        async: false,
+		        data: {sectorName: NewSector.value},
+		        success: function(data) {
+		        	/*alert(data);*/
+		            flag=data;
+		        }
+    		});
+
+	    	if(flag==true){
+	    		NewSector.focus();
+	    		document.getElementById('addNewSectorSubmitStatus1').innerHTML=NewSector.value+" already exists in sector list!";
+	    		return false;
+	    	}
+
+		}
+
 		return true;
 	}
 
 	function validateNewSector2(){
 
 		var NewSector =document.newSectorAdd2Frm.addNewSector2;
-		if(!NewSector.value){
-			NewSector.focus();
-			document.getElementById('addNewSectorSubmitStatus2').innerHTML="Selct box is empty!";
-			return false;		
-		}
+		var flag;
+		var year='<?php echo $Year; ?>';
+		$.ajax({
+	        url: "ajax.php",
+	        type: "post",
+	        async: false,
+	        data: {sectorId: NewSector.value, Year: year},
+	        success: function(data) {
+	        	/*alert(data);*/
+	            flag=data;
+	        }
+    	});
+    	
+    	if(flag==true){
+    		document.getElementById('addNewSectorSubmitStatus2').innerHTML=$("#addNewSector2 option:selected").html()+" already exists !";
+    		return false;
+    	}
 		return true;
 	}
 
 	function validate(){
 
-		var isValid;
+		var isValid=true;
 		$('input[id="budgetAmount"]').each(function() {
 		   	var element = $(this);
-		   	if (element.val() == "") {
+		   	if (isNaN(element.val())) {
 		       isValid = false;
+		       $('#amountStatus').html('Enter valid number');
 		       element.focus();
 		   	}
+		   	else if(element.val() == "" ){
+		   		isValid = false;
+		   		$('#amountStatus').html('Amount cannot be empty');
+		       	element.focus();
+		   	}
+		   	else if(element.val() < 1){
+		   		isValid = false;
+		   		$('#amountStatus').html('Enter a positive number');
+		       	element.focus();
+		   	}
+
 			});
 		return isValid;	
 	}

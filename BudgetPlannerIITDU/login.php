@@ -4,8 +4,9 @@ require_once("config.php");
 	session_start();
 	$error="";
 	if($_SERVER["REQUEST_METHOD"]=="POST"){
-		$email = trim($_POST['email']);
-		$password = substr(hash('sha256', trim($_POST['password'])),7,20) ;
+		$email = mysqli_real_escape_string($db,trim($_POST['email']));
+		$password=mysqli_real_escape_string($db,trim($_POST['password']));
+		$password = substr(hash('sha256', $password),7,20) ;
 		
 		$sql = "SELECT UserId FROM user WHERE email = '$email' and password = '$password'";
 		$result=$db->query($sql);

@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Profile</title>
 	<?php require_once('html/load.html'); ?>
 </head>
-<link rel="stylesheet" type="text/css" href="assets/css/modal.css">
 <body>
 <?php require_once('html/navbar.html'); ?>
 
@@ -16,7 +14,7 @@
    	<ul class="list-group">
 	  <li class="list-group-item"><h2><?php echo $row['Name']; ?> </h2> </li>
 	  <li class="list-group-item"><b>Email: </b> <?php echo $row['Email']; ?> </li>
-	  <li class="list-group-item"><b>Role: </b><?php if($row['Role']==1) echo "Admin"; else if($row['Role']==1) echo "Budget committee member"; else echo "Budget officer"; ?> </li>
+	  <li class="list-group-item"><b>Role: </b><?php if($row['Role']==1) echo "Admin"; else if($row['Role']==2) echo "Budget committee member"; else echo "Budget officer"; ?> </li>
 	</ul>
 	<button id="modalBtn" class="btn btn-primary" >Change Password</button>
 </div>
@@ -25,48 +23,11 @@
 
 <?php require_once('html/changePassword.html') ?>
 
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
+<footer style="text-align: center;">
+ <small>© Copyright <?php echo date('Y');?>, IIT, University of Dhaka</small>
+</footer>
 
 <script src="assets/js/modal.js"></script>
 
 </body>
-=======
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Profile</title>
-	<?php require_once('html/load.html'); ?>
-</head>
-<link rel="stylesheet" type="text/css" href="assets/css/modal.css">
-<body>
-<?php require_once('html/navbar.html'); ?>
-
-<div class="container" id="containter">
- 
- <div class="jumbotron">
-  <h1>User profile</h1>
-   	<ul class="list-group">
-	  <li class="list-group-item"><h2><?php echo $row['Name']; ?> </h2> </li>
-	  <li class="list-group-item"><b>Email: </b> <?php echo $row['Email']; ?> </li>
-	  <li class="list-group-item"><b>Role: </b><?php if($row['Role']==1) echo "Admin"; else if($row['Role']==1) echo "Budget committee member"; else echo "Budget officer"; ?> </li>
-	</ul>
-	<button id="modalBtn" class="btn btn-primary" >Change Password</button>
-</div>
-
-</div>
-
-<?php require_once('html/changePassword.html') ?>
-
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
-
-<script src="assets/js/modal.js"></script>
-
-</body>
->>>>>>> 6cd41e290367a2cdedd766d5f9b480d2959dc6a1
 </html>

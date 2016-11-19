@@ -4,12 +4,8 @@
 tr,th{
 	text-align: center;
 }
-textarea:focus,input:focus {
-    outline: none !important;
-    border:1px solid red;
-    box-shadow: 0 0 10px #719ECE;
+
+footer{
+	margin: 10px;
 }
 
-.footer{
-	margin-top: 20px;
-}

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +7,6 @@
 <body>
 <?php require_once('html/navbar.html'); ?>
 
-
 <div class="container" id="containter">
 	  
 	<div class="row">
@@ -17,18 +15,17 @@
 			
 			<?php
 				if($row['Role']==3){
-					if($canEdit=='1')
+					if($result['CanEdit']=='1')
 						require_once('html/BudgetEdit.html');
 					else require_once('html/RunningBudget.html');
 				}
 				else{
-					require_once('html/RunningBudget.html');	
-				}
-
-				if($row['Role']!=3){
-					if($canComment==true)
+					require_once('html/RunningBudget.html');
+					
+					if($result['CanEdit']=='0' and $row['Vote']==NULL)
 						require_once('comment.html');
 				}
+				
 			?> 	
 
 		</div>
@@ -50,7 +47,7 @@
 		     <?php 
 
 		     	if($sql_SearchedBudget->num_rows==0){?>
-		     		<center> No Budget available for year: <? echo $searchedYear; ?></center>
+		     		<span class="text-danger"> No Budget available for year: <?php echo $searchedYear; ?></span>
 		     	<?php
 		     	}
 
@@ -84,10 +81,10 @@
 
 	</div>
   </div>
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
+
+<footer style="text-align: center;">
+ <small>© Copyright <?php echo date('Y');?>, IIT, University of Dhaka</small>
+</footer>
 
 <script>
 
@@ -109,130 +106,11 @@ function validateYear(){
             format: 'yyyy',
             viewMode: "years", 
     		minViewMode: "years",
-            autoclose: true,
+            autoclose: true
         })
     })
 </script>
 
   
 </body>
-=======
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Home</title>
-  <?php require_once('html/load.html'); ?> 
-</head>
-<body>
-<?php require_once('html/navbar.html'); ?>
-
-
-<div class="container" id="containter">
-	  
-	<div class="row">
-		
-		<div class="col-sm-6" >
-			
-			<?php
-				if($row['Role']==3){
-					if($canEdit=='1')
-						require_once('html/BudgetEdit.html');
-					else require_once('html/RunningBudget.html');
-				}
-				else{
-					require_once('html/RunningBudget.html');	
-				}
-
-				if($row['Role']!=3){
-					if($canComment==true)
-						require_once('comment.html');
-				}
-			?> 	
-
-		</div>
-
-		<div class="col-sm-6"> 
-			<form method="post" name="search_yearFrm" onsubmit="return validateYear()">
-		      <div class="form-group">
-		      		<label class="control-label" for="year">Budget Year</label>
-			      	<div style="width: 200px;" class="input-group">		
-					   	<input class="form-control" id="year" name="year" placeholder="Year" type="text" value="<?php echo $searchedYear; ?>" />
-					   	<span class="input-group-btn">
-					    	<button class="btn btn-primary" name="prevBudgetSubmit" type="submit">Go</button>
-					   	</span>
-					</div>
-					<span class="text-danger" id="yearStatus" ></span>
-				</div>
-		     </form>
-
-		     <?php 
-
-		     	if($sql_SearchedBudget->num_rows==0){?>
-		     		<center> No Budget available for year: <? echo $searchedYear; ?></center>
-		     	<?php
-		     	}
-
-		     	else{?>
-		     		<table class="table table-bordered">
-		    			<thead>
-
-		    				<tr>
-					    		<th>Sector Name</th>
-					    		<th>Budget(TK)</th>
-		    				</tr>
-		    			</thead>	
-				    	<tbody>
-					    	<?php
-				              while(list($SectorName,$Amount)=$sql_SearchedBudget->fetch_row()) {?>
-				                <tr>
-				                  <td><?php echo $SectorName; ?></td>
-				                  <td><?php echo $Amount; ?></td>
-				                </tr>
-				            <?php 
-				              } 
-            				?> 
-					    </tbody>
-		    		</table> 
-
-		     	<?php
-		     	}
-		     ?>
-		    
-		</div>
-
-	</div>
-  </div>
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
-
-<script>
-
-function validateYear(){
-
-	var SearchedYear=document.search_yearFrm.year;
-
-	if(!SearchedYear.value){
-		document.getElementById('yearStatus').innerHTML="Enter a year first !";
-		return false;
-	}
-	return true;
-
-	}
-
-    $(document).ready(function(){
-        var date_input=$('input[name="year"]'); //our date input has the name "date"
-        date_input.datepicker({
-            format: 'yyyy',
-            viewMode: "years", 
-    		minViewMode: "years",
-            autoclose: true,
-        })
-    })
-</script>
-
-  
-</body>
->>>>>>> 6cd41e290367a2cdedd766d5f9b480d2959dc6a1
 </html>

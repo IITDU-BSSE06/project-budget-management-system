@@ -1,6 +1,3 @@
-
-</script>		
-
 		<center>
         	<label>Running Budget's resources <?php echo $Year;?> </label>
       	</center>
@@ -10,8 +7,8 @@
 			<table class="table table-bordered">
 			    <thead>
 			    	<tr>
-			    		<th>Resoure Name</th>
-			    		<th>Budget(TK)</th>
+			    		<th>Resource Name</th>
+			    		<th>Amount(TK)</th>
 			    		<th>Remove</th>
 			    	</tr>
 			    </thead>
@@ -20,11 +17,11 @@
 			    		
 			    		<?php
 			 if($sql->num_rows>0){
-		while(list($ResoureId,$ResoureName,$Amount)=$sqlBudget->fetch_row()) {?>
+		while(list($ResourceId,$ResourceName,$Amount)=$sqlBudget->fetch_row()) {?>
 			    		<tr>
-				    		<td><?php echo $ResoureName; ?></td>
-				    		<td><input id="budgetAmount" name="<?php echo $ResoureId; ?>" value="<?php echo $Amount; ?>" ></td>
-				    		<td ><a href="Resources.php?delete_id=<?php echo "$ResoureId"?>" onclick="return confirm ('Are You Sure to remvoe  Resoure <?php echo "$ResoureName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
+				    		<td><?php echo $ResourceName; ?></td>
+				    		<td><input id="budgetAmount" name="<?php echo $ResourceId; ?>" value="<?php echo $Amount; ?>" ></td>
+				    		<td ><a href="Resources.php?delete_id=<?php echo "$ResourceId"?>" onclick="return confirm ('Are you sure to remvoe resoure: <?php echo "$ResourceName" ?> ?')" ><span class="glyphicon glyphicon-remove"></span></a></td>
 			    		</tr>
 			    		<?php
 						} 
@@ -33,64 +30,106 @@
 			    </tbody>	
 			</table>
 			
-			<span class="text-danger"></span>
+			<span class="text-danger" id="amountStatus"></span>
 			<button class="btn btn-primary" name="submitBudget" style="float: right; width: 100px;">Submit</button>	
 		</form>
 
 		<br><br><br>
 		
 
-		<form method="post" onsubmit="return validateNewResoure1()" name="newResoureAdd1Frm">
+		<form method="post" onsubmit="return validateNewResource1()" name="newResourceAdd1Frm">
 			<div class="form-group">
-			<label class="control-label" for="year">Add New Resoure</label>
+			<label class="control-label" for="year">Add New Resource</label>
 			    <div class="input-group">		
-					<input class="form-control" id="addNewResoure" name="addNewResoure" placeholder="Enter a Resoure name" type="text"/>
+					<input class="form-control" id="addNewResource" name="addNewResource" placeholder="Enter a Resource name" type="text"/>
 					<span class="input-group-btn">
-					    <button class="btn btn-primary" name="addNewResoureSubmit1" type="submit">Add</button>
+					    <button class="btn btn-primary" name="addNewResourceSubmit1" type="submit">Add</button>
 					</span>
 				</div>
-				<span id="addNewResoureSubmitStatus1" class="text-danger"></span>
+				<span id="addNewResourceSubmitStatus1" class="text-danger"></span>
 			</div>
 		</form>
 
 
-			<!-- <form method="post" name="newResourceAdd2Frm" onsubmit="return validateNewResource2()">
+		<form method="post" name="newResourceAdd2Frm" onsubmit="return validateNewResource2()">
 			<div class="form-group">
 				<label class="control-label">Add new resource from existing resources</label>
-				<div class="input-group">		
-					<select class="form-control" name="addNewResource2">
-				  		<option value="1">First</option>
-				  		<option value="2">Second</option>
-				  		<option value="3">Third</option>
-					</select>
+				<div class="input-group">	
+				<?php
+
+					$resourceList=$db->query("select * from resources");
+
+					$select= '<select name="addNewResource2" id="addNewResource2" class="form-control">';
+					while($rs=$resourceList->fetch_array(MYSQLI_ASSOC)){
+      					$select.='<option value="'.$rs['ResourceId'].'">'.$rs['ResourceName'].'</option>';
+  					}
+					$select.='</select>';
+					echo $select;
+
+				?>	
+					
 					<span class="input-group-btn">
 						<button class="btn btn-primary" name="addNewResource2Submit" type="submit">Add</button>
 					</span>
 				</div>
 				<span id="addNewResourceSubmitStatus2" class="text-danger"></span>
 			</div>		
-		</form> -->
+		</form>
 		
 <script>
-	function validateNewResoure1(){
 
-		var NewResoure =document.newResoureAdd1Frm.addNewResoure;
-		if(!NewResoure.value){
-			NewResoure.focus();
-			document.getElementById('addNewResoureSubmitStatus1').innerHTML="Enter a Resoure name first !";
+	function validateNewResource1(){
+
+		var NewResource =document.newResourceAdd1Frm.addNewResource;
+		if(!NewResource.value){
+			NewResource.focus();
+			document.getElementById('addNewResourceSubmitStatus1').innerHTML="Enter a Resource name first !";
 			return false;		
 		}
+		else {
+			var flag;
+			$.ajax({
+		        url: "ajax.php",
+		        type: "post",
+		        async: false,
+		        data: {resourceName: NewResource.value},
+		        success: function(data) {
+		        	/*alert(data);*/
+		            flag=data;
+		        }
+    		});
+
+	    	if(flag==true){
+	    		NewResource.focus();
+	    		document.getElementById('addNewResourceSubmitStatus1').innerHTML=NewResource.value+" already exists in resource list!";
+	    		return false;
+	    	}
+
+		}
+
 		return true;
 	}
 
-	function validateNewResoure2(){
+	function validateNewResource2(){
 
-		var NewResoure =document.newResoureAdd2Frm.addNewResoure2;
-		if(!NewResoure.value){
-			NewResoure.focus();
-			document.getElementById('addNewResoureSubmitStatus2').innerHTML="Selct box is empty!";
-			return false;		
-		}
+		var NewResource =document.newResourceAdd2Frm.addNewResource2;
+		var flag;
+		var year='<?php echo $Year; ?>';
+		$.ajax({
+	        url: "ajax.php",
+	        type: "post",
+	        async: false,
+	        data: {resourceId: NewResource.value, Year: year},
+	        success: function(data) {
+	        	/*alert(data);*/
+	            flag=data;
+	        }
+    	});
+    	
+    	if(flag==true){
+    		document.getElementById('addNewResourceSubmitStatus2').innerHTML=$("#addNewResource2 option:selected").html()+" already exists !";
+    		return false;
+    	}
 		return true;
 	}
 
@@ -99,11 +138,23 @@
 		var isValid;
 		$('input[id="budgetAmount"]').each(function() {
 		   	var element = $(this);
-		   	if (element.val() == "") {
+		   	if (isNaN(element.val())) {
 		       isValid = false;
+		       $('#amountStatus').html('Enter valid number');
 		       element.focus();
 		   	}
-			});
+		   	else if(element.val() == "" ){
+		   		isValid = false;
+		   		$('#amountStatus').html('Amount cannot be empty');
+		       	element.focus();
+		   	}
+		   	else if(element.val() < 1){
+		   		isValid = false;
+		   		$('#amountStatus').html('Enter a positive number');
+		       	element.focus();
+		   	}
+
+		});
 		return isValid;	
 	}
 	

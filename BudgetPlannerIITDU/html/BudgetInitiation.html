@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Home</title>
+  <title>Budget Initiation</title>
   <?php require_once('html/load.html'); ?> 
 </head>
 <body>
@@ -9,47 +9,89 @@
 
 <div class="container" id="containter">
 	<div class="jumbotron">
-  		<h1>Budget <?php echo $currentYear; ?> </h1>
-   		<ul class="list-group">
-		
-		<li class="list-group-item">
-			
-			<form name="DateForm" method="post" onsubmit="return validate()" >	
-				<ul class="list-group">
-
-					<li "list-group-item">
-						<div class="form-group">
-						    <label for="Student">Start Date: </label>
-						    <input  name="startDate" id="date" style="width: 15%" placeholder="mm/dd/yy" type="text" />
-						    <span id="startDateStatus" class="text-danger"></span>
-						</div>
-					</li>
-						
-					<li "list-group-item">	
-						<div class="form-group">
-						    <label for="Student">End Date: </label>
-						    <input  name="endDate" id="date"  style="width: 15%" placeholder="mm/dd/yy" type="text" />
-						    <span id="endDateStatus" class="text-danger"></span>
-						</div>	
+  		<h1>Budget <?php echo $currentYear; ?> </h1>	
+			<?php 
+			if($sql->num_rows>0 and $result['Status']==1){?>
+				<p>The final budget of <?php echo $currentYear; ?> has been created succesfully. Starting date and Ending date was:</p>
+				<ul>
+					<li class="list-group-item">
+						<label> Start Date: <span id="startDate"> <?php echo $start_date; ?> </span></label>
 					</li>
 
-				</ul>	
-			    <button id="submitDate" name="submitDate" class="btn btn-primary" >Submit</button> 
-			</form>
+					<li class="list-group-item">
+						<label> End Date: <span id="startDate"> <?php echo $end_date; ?> </span></label>
+					</li>
+				</ul>
+			<?php
+			}
 
-		</li>
-		</ul>
-	</div>
+			else if($sql->num_rows>0 and $result['Status']==0){?>
+				<ul>
+					<form name="DateForm" method="post" onsubmit="return validateEndDate()" >
+						<li class="list-group-item">
+							<label> Start Date: <span id="startDate"> <?php echo $start_date; ?> </span></label>
+						</li>
+						<li class="list-group-item">	
+							<div class="form-group">
+								<label for="Student">End Date: </label>
+								<div class='input-group date' id='datetimepicker2' style="width: 20%">
+			                    	<input  class="form-control" name="endDate" id="endDate" placeholder="mm/dd/yy" type="text" />
+			                    	<span class="input-group-addon">
+			                        	<span class="glyphicon glyphicon-calendar"></span>
+			                        </span>
+		                		</div>
+								<span id="endDateStatus" class="text-danger"></span>
+							</div>	
+						</li>
+						<br>
+						<button id="submitDate" name="editEndDate" class="btn btn-primary">Expand End Date</button>	
+					</form>
+				</ul>
+			<?php
+			}
+			else if($sql->num_rows==0){?>
+				<ul>
+					<form name="DateForm" method="post" onsubmit="return validateStartEndDate()" >
+						<li class="list-group-item">
+							<div class="form-group">
+								<label for="Student">Start Date: </label>
+								<div class='input-group date' id='datetimepicker1' style="width: 20%">
+		                            <input  class="form-control" name="startDate" id="startDate" placeholder="mm/dd/yy" type="text"/>
+		                            <span class="input-group-addon">
+		                                <span class="glyphicon glyphicon-calendar"></span>
+		                            </span>
+		                        </div>
+								<span id="startDateStatus" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label for="Student">End Date: </label>
+								<div class='input-group date' id='datetimepicker2' style="width: 20%">
+		                    		<input  class="form-control" name="endDate" id="endDate" placeholder="mm/dd/yy" type="text" />
+		                    		<span class="input-group-addon">
+		                                <span class="glyphicon glyphicon-calendar"></span>
+		                            </span>
+		                		</div>
+								<span id="endDateStatus" class="text-danger"></span>
+							</div>
+						</li>
+						<br>	
+ 						<button id="submitDate" name="submitDate" class="btn btn-primary">Submit</button>
+					</form>	
+				</ul>
+				
+			<?php
+			}
+			?>
+	</div>					
 </div>	
 
-<div class="footer">
-  <p style="text-align: center;">Copyright &copy;2016 by Institute of Information Technology</br>
-  University of Dhaka</p>
-</div>
-
+<footer style="text-align: center;">
+ <small>© Copyright <?php echo date('Y');?>, IIT, University of Dhaka</small>
+</footer>
 
 <script>
-	function validate(){
+
+	function validateStartEndDate(){
 		var startDate = document.DateForm.startDate;
 		var endDate=document.DateForm.endDate;
 		document.getElementById('startDateStatus').innerHTML="";
@@ -71,16 +113,66 @@
 		return true;
 	}
 
+	function validateEndDate(){
+		var startDate = document.getElementById('startDate').innerHTML;
+		var endDate=document.DateForm.endDate;
+		
+		document.getElementById('endDateStatus').innerHTML="";
+
+		if (!endDate.value) {
+			document.getElementById('endDateStatus').innerHTML="End date is empty !";
+			return false;
+		}
+
+		//alert(getCurrentDate());
+
+		if (new Date(endDate.value) < new Date(getCurrentDate()) ) {
+			//alert(getCurrentDate());
+    		document.getElementById('endDateStatus').innerHTML="End date should be after current date: "+getCurrentDate();
+    		return false;
+		}
+		return true;
+	}
+
+
+function getCurrentDate(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+		    dd='0'+dd;
+		} 
+
+		if(mm<10) {
+		    mm='0'+mm;
+		} 
+
+		return today = mm+'/'+dd+'/'+yyyy;
+}
+
     $(document).ready(function(){
-        var date_input=$('input[id="date"]'); //our date input has the name "date"
+        var date_input=$('#datetimepicker1'); //our date input has the name "date"
         date_input.datepicker({
             format: 'mm/dd/yy',
             autoclose: true,
+            orientation: 'bottom'       	
             
-        })
-    })
+        });
+    });
+
+    $(document).ready(function(){
+        var date_input=$('#datetimepicker2'); //our date input has the name "date"
+        date_input.datepicker({
+            format: 'mm/dd/yy',
+            autoclose: true ,
+            orientation: 'bottom'     	
+            
+        });
+    });
+
 </script>
 
-  
 </body>
 </html>
