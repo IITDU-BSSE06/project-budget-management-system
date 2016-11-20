@@ -13,7 +13,7 @@
 			<?php 
 			if($sql->num_rows>0 and $result['Status']==1){?>
 				<p>The final budget of <?php echo $currentYear; ?> has been created succesfully. Starting date and Ending date was:</p>
-				<ul>
+				<ul class="list-group">
 					<li class="list-group-item">
 						<label> Start Date: <span id="startDate"> <?php echo $start_date; ?> </span></label>
 					</li>
@@ -26,7 +26,7 @@
 			}
 
 			else if($sql->num_rows>0 and $result['Status']==0){?>
-				<ul>
+				<ul class="list-group">
 					<form name="DateForm" method="post" onsubmit="return validateEndDate()" >
 						<li class="list-group-item">
 							<label> Start Date: <span id="startDate"> <?php echo $start_date; ?> </span></label>
@@ -50,7 +50,7 @@
 			<?php
 			}
 			else if($sql->num_rows==0){?>
-				<ul>
+				<ul class="list-group">
 					<form name="DateForm" method="post" onsubmit="return validateStartEndDate()" >
 						<li class="list-group-item">
 							<div class="form-group">

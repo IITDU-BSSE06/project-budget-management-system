@@ -54,26 +54,14 @@
     cursor: pointer;
 }
 
-/*.modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-}*/
 
 .modal-body {padding: 2px 16px;}
 
-/*.modal-footer {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-  }*/
 
   .modal-header, h4, .close {
-      background-color: #5cb85c;
+      background-color: #468bca;
+      border-color: #357ebd;
       color:white !important;
       text-align: center;
       font-size: 30px;
-  }
-  .modal-footer {
-      background-color: #f9f9f9;
   }
